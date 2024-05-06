@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ds hóa đơn</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+{% load cart_tags %}
+<body>
+    {% if ds_order|length == 0 %}
+        <div class="flex justify-center items-center">
+            <h1 class="mb-6 text-5xl px-6 mt-6">Chưa có order nào!</h1>
+        </div>
+    {% endif %}
+	<div class="my-5 text-center">
+        <a href="javascript:history.back()" class="px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Quay lại</a>
+    </div>
+    {% for order in ds_order %}
+	<div class="flex justify-center items-center">
+        <div class="px-6 text-center">
+            <div class="w-full">
+                <a href="{% url 'customer:detail-order' order.id %}" class="px-5">
+                    <div class="pr-6 flex bg-gray-100 rounded-xl justify-between items-center h-24">
+                        <div class="pr-6">
+                            <p class="text-4xl px-6 text-4xl px-6 text-gray-500">
+                                {{ order.date|custom_date_format }}
+                            </p>
+                        </div>
+                        <p>Total price: {{ order.total_price|number_format }} đ</p>
+                        <div class="pr-6">
+                            <p class="text-xl px-6">
+                                {% if order.isDone == True %}
+                                    <span class="text-green-500"> Done</span>
+                                {% else %}
+                                    {% if order.approved == True %}
+                                        <span class="text-orange-500">Delivering</span>
+                                    {% else %}
+                                        <span class="text-red-500"> Unapproved</span>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+	</div>
+    {% endfor %}
+</body>
+
+</html>

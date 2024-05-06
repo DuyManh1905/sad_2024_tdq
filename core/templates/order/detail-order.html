@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-6 text-3xl">Detail order</h1>
+{% load cart_tags %}
+<div class="space-y-6">
+    {% for item in order.order_product %}
+        <div class="p-6 flex bg-gray-100 rounded-xl">
+            <div class="pr-6">
+                <img src="{{ item.image }}" class="w-20 rounded-xl">
+            </div>
+
+            <div>
+                <p class="text-2xl">{{ item.title }}</p>
+                <p class="text-2xl">{{ item.name }}</p>
+                <p class="text-xl text-gray-500">Đơn giá {{ item.price|number_format }} đ</p>
+                <p class="text-xl text-gray-500"> Số lượng: {{ item.quantity }}</p>
+                <p class="text-xl text-green-500"> Thành tiền: {{ item.total_price|number_format }} đ</p>
+            </div>
+        </div>
+    {% endfor %}
+    <p class="text-3xl text-green-700 font-bold">Tổng tiền: {{ order.total_price|number_format }} đ</p>
+    <p class="text-3xl text-gray-500 font-bold">Thời gian đặt hàng: {{ order.date|custom_date_format }}</p>
+    <p class="text-3xl text-gray-500 font-bold">
+        Trạng thái: 
+        {% if order.isDone == True %}
+            <span class="text-green-500"> Done</span>
+        {% else %}
+            {% if order.approved == True %}
+                <span class="text-orange-500"> Approved - Delivering</span>
+            {% else %}
+                <span class="text-red-500"> Unapproved</span>
+            {% endif %}
+        {% endif %}
+    </p>
+    {% if order.approved == True %}
+    <button class="toggleButton inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">View detail</button>
+    {% else %}
+    <form action="{% url 'customer:cancel-order' %}" method="POST" onsubmit="return confirm('Are you sure cancel this order?')">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <button type="submit" class="px-6 py-3 font-bold rounded-xl bg-red-500 hover:bg-red-700 text-white my-5">Cancel Order</button>
+    </form>
+    {% endif %}
+    <div class="overlay"></div>
+    <div class="popup">
+        
+        {% for status in shipment_status.shipment_status %}
+            <div class="w-full mx-6 my-6">
+                <p class="text-gray-500">{{ status.time|custom_datetime_format }}</p>
+                <p>{{ status.shipment_status }}</p>
+            </div>
+            
+        {% endfor %}
+            
+        <button class="closeButton px-3 py-2 bg-red-500 rounded-xl text-lg text-white bordered">X</button>
+    </div>
+    
+</div>
+{% endblock content %}
+

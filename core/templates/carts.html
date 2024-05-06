@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-6 text-3xl font-bold text-orange-700">Your cart</h1>
+{% load cart_tags %}
+<div class="space-y-6">
+    {% for book in cart.cart_book %}
+        <div class="p-6 flex bg-gray-100 rounded-xl">
+            <div class="pr-6">
+                <img src="{{ book.image }}" class="w-20 rounded-xl">
+            </div>
+
+            <div>
+                <p class="text-2xl">{{ book.title }}</p>
+                <p class="text-xl text-gray-500">Đơn giá {{ book.price|number_format }} đ</p>
+                <p class="text-xl text-gray-500"> Số lượng: {{ book.quantity }}</p>
+                <p class="text-xl text-green-500"> Thành tiền: {{ book.total_price|number_format }} đ</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for clothes in cart.cart_clothes %}
+        <div class="p-6 flex bg-gray-100 rounded-xl">
+            <div class="pr-6">
+                <img src="{{ clothes.image }}" class="w-20 rounded-xl">
+            </div>
+
+            <div>
+                <p class="text-2xl">{{ clothes.name }}</p>
+                <p class="text-xl text-gray-500">Đơn giá {{ clothes.price|number_format }} đ</p>
+                <p class="text-xl text-gray-500"> Số lượng: {{ clothes.quantity }}</p>
+                <p class="text-xl text-green-500"> Thành tiền: {{ clothes.total_price|number_format }} đ</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for mobile in cart.cart_mobile %}
+        <div class="p-6 flex bg-gray-100 rounded-xl">
+            <div class="pr-6">
+                <img src="{{ mobile.image }}" class="w-20 rounded-xl">
+            </div>
+
+            <div>
+                <p class="text-2xl">{{ mobile.name }}</p>
+                <p class="text-xl text-gray-500">Đơn giá {{ mobile.price|number_format }} đ</p>
+                <p class="text-xl text-gray-500"> Số lượng: {{ mobile.quantity }}</p>
+                <p class="text-xl text-green-500"> Thành tiền: {{ mobile.total_price|number_format }} đ</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if cart.cart_book|length > 0 or cart.cart_clothes|length > 0 or cart.cart_mobile|length > 0 %}
+    <p class="text-3xl text-green-700 font-bold">Tổng tiền: {{ total_price|number_format }} đ</p>
+    <form action="{% url 'customer:order-form' %}" method="POST" class="text-center">
+        {% csrf_token %}
+        <input type="hidden" name="cart" value="{{ cart }}">
+        <input type="hidden" name="total_price" value="{{ total_price }}">
+        <button type="submit" class="px-6 py-3 text-white bg-green-500 hover:bg-green-700 rounded-xl font-bold">Mua ngay</button>
+    </form>
+    {% else %}
+    <p class="text-3xl text-green-700 font-bold">Bạn chưa có sản phẩm nào trong giỏ hàng</p>
+    {% endif %}
+    
+</div>
+{% endblock content %}
+

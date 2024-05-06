@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome{% endblock %}
+{% load cart_tags %}
+{% block content %}
+    <div class="mt-6 px-6 py-12 rounded-xl">
+        <h2 class="mb-12 text-5xl text-center font-bold">List Book</h2>
+
+        <div class="grid grid-cols-3 gap-3">
+            {% for item in books %}
+                <div class="w-4/5">
+                    <a href="{% url 'user:detail-book' item.id %}">
+                        <div>
+                            <img src="{{ item.image }}" class="rounded-t-xl">
+                        </div>
+
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ item.title }}</h2>
+                            <p class="text-gray-500">Price: {{ item.price|number_format }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="mb-12 text-5xl text-center font-bold mt-5">List Clothes</h2>
+
+        <div class="grid grid-cols-3 gap-3">
+            {% for item in clothes %}
+                <div class="w-4/5">
+                    <a href="{% url 'user:detail-clothes' item.id %}">
+                        <div>
+                            <img src="{{ item.image }}" class="rounded-t-xl">
+                        </div>
+
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ item.name }}</h2>
+                            <p class="text-gray-500">Price: {{ item.price|number_format }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="mb-12 text-5xl text-center font-bold mt-5">List Mobiles</h2>
+
+        <div class="grid grid-cols-3 gap-3">
+            {% for item in mobiles %}
+                <div class="w-4/5">
+                    <a href="{% url 'user:detail-mobile' item.id %}">
+                        <div>
+                            <img src="{{ item.image }}" class="rounded-t-xl">
+                        </div>
+                        <p>{{ item.image.url }}</p>
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ item.name }}</h2>
+                            <p class="text-gray-500">Price: {{ item.price|number_format }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

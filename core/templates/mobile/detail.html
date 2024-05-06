@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ cloth.name }}{% endblock %}
+
+{% block content %}
+{% load cart_tags %}
+<div class="grid grid-cols-4">
+    <div class="col-span-2 w-2/3 ml-5">
+        <img src="{{ mobile.image }}" class="rounded-xl">
+    </div>
+
+    <div class="col-span-2 py-6 rounded-xl">
+        <h1 class="mb-6 text-5xl font-bold">{{ mobile.title }}</h1>
+        <p><strong>Price: </strong>{{ mobile.price|number_format }}</p>
+        <p><strong>Brand: </strong>{{ mobile.brand }}</p>
+        <p><strong>Category: </strong>{{ mobile.category.name }}</p>
+        <p><strong>Amount: </strong>{{ mobile.quantity }}</p>
+        
+        {% if mobile.description %}
+            <p>
+                <strong>Description:</strong><br>
+                {{ mobile.description }}
+            </p>
+        {% endif %}
+
+        {% if request.session.user.role == 'customer' %}
+            <button class="toggleButton inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">Add to cart</button>
+        {% endif %}
+        {% if request.session.user == None %}
+            <a href="/login-form/" class="inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">Add to cart</a>
+        {% endif %}
+
+        <!-- Popup và overlay -->
+        <div class="overlay"></div>
+        <div class="popup">
+            <form action="{% url 'customer:add-mobile-cart' %}" method="post" class="grid grid-cols-5 gap-6">
+                {% csrf_token %}
+                <input type="hidden" name="mobile_id" value="{{ mobile.id }}">
+                <input type="hidden" name="name" value="{{ mobile.name }}">
+                <input type="hidden" name="image" value="{{ mobile.image }}">
+                <input type="hidden" name="price" value="{{ mobile.price }}">
+                <div class="col-span-3">
+                    <img src="{{ mobile.image }}" class="rounded-xl">
+                </div>
+                <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+                    <h1 class="mb-6 text-2xl">{{ mobile.name }}</h1>
+                    <p>Total Amount: {{ mobile.quantity }}</p> <br>
+                    Chọn số lượng: <input type="number" name="quantity" min="1" max="10" value="1" class="rounded-xl border border-solid border-black text-center">
+                    <button type="submit" class="toggleButton inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">Add to cart</button>
+                </div>
+                
+            </form>
+            <button class="closeButton px-3 py-2 bg-red-500 rounded-xl text-lg text-white bordered">X</button>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

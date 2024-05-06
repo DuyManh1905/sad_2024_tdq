@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Items{% endblock %}
+{% load cart_tags %}
+{% block content %}
+    <div class="pb-6 grid grid-cols-5 gap-4 bg-gray-100">
+        <div class="col-span-1">
+            <form method="get" action="{% url 'customer:search' %}">
+                <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find a bike, a chair or car...">
+                <select name="product" class="px-3 py-3 rounded-xl font-bold">
+                    <option value="all" {% if product == 'all' %}selected{% endif %}>All</option>
+                    <option value="book" {% if product == 'book' %}selected{% endif %}>Books</option>
+                    <option value="clothes" {% if product == 'clothes' %}selected{% endif %}>Clothes</option>
+                    <option value="mobile" {% if product == 'mobile' %}selected{% endif %}>Mobile</option>
+                </select>
+                {% if product == 'book' %} 
+                    <ul>
+                        {% for category in cart_book %}
+                            <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-yellow-100{% endif %}">
+                                <a href="{% url 'customer:search' %}?query={{query}}&product={{product}}&category={{ category.id }}">{{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if product == 'clothes' %} 
+                    <ul>
+                        {% for category in cart_clothes %}
+                            <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-yellow-100{% endif %}">
+                                <a href="{% url 'customer:search' %}?query={{query}}&product={{product}}&category={{ category.id }}">{{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if product == 'mobile' %} 
+                    <ul>
+                        {% for category in cart_mobile %}
+                            <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-yellow-100{% endif %}">
+                                <a href="{% url 'customer:search' %}?query={{query}}&product={{product}}&category={{ category.id }}">{{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <button class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl mx-5">Search</button>
+            </form>
+            <div class="mt-3 py-6">
+                <a href="{% url 'customer:search-voice' %}" class="mt-2 py-4 px-8 text-lg bg-red-500 text-white rounded-xl">Search-voice</a>
+            </div>
+            <hr class="my-6">
+            
+            <ul>
+                <li><a href="/search-page/" class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white">Clear filters</a>
+        </div>
+
+        <div class="col-span-4 bg-white">
+
+            {% if query %}
+                <h2 class="mb-12 text-2xl text-center mt-3">Kết quả tìm kiếm cho từ khóa "{{ query }}"</h2>
+            {% endif %}
+
+            <div class="grid grid-cols-3 gap-4">
+                {% for item in books %}
+                    <div class="w-5/6">
+                        <a href="{% url 'user:detail-book' item.id %}">
+                            <div>
+                                <img src="{{ item.image }}" class="rounded-t-xl">
+                            </div>
+
+                            <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{ item.title }}</h2>
+                                <p class="text-gray-500">Price: {{ item.price|number_format }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+                {% for item in clothes %}
+                    <div class="w-5/6">
+                        <a href="{% url 'user:detail-clothes' item.id %}">
+                            <div>
+                                <img src="{{ item.image }}" class="rounded-t-xl">
+                            </div>
+
+                            <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{ item.name }}</h2>
+                                <p class="text-gray-500">Price: {{ item.price|number_format }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+                {% for item in mobiles %}
+                    <div class="w-5/6">
+                        <a href="{% url 'user:detail-mobile' item.id %}">
+                            <div>
+                                <img src="{{ item.image }}" class="rounded-t-xl">
+                            </div>
+                            <p>{{ item.image.url }}</p>
+                            <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{ item.name }}</h2>
+                                <p class="text-gray-500">Price: {{ item.price|number_format }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

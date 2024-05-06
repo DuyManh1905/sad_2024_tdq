@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ cloth.name }}{% endblock %}
+
+{% block content %}
+{% load cart_tags %}
+<div class="grid grid-cols-4">
+    <div class="col-span-2 w-2/3 ml-5">
+        <img src="{{ book.image }}" class="rounded-xl">
+    </div>
+
+    <div class="col-span-2 py-6 rounded-xl">
+        <h1 class="mb-6 text-5xl font-bold">{{ book.title }}</h1>
+        <p><strong>Price: </strong>{{ book.price|number_format }}</p>
+        <p><strong>Brand: </strong>{{ book.brand }}</p>
+        <p><strong>Author: </strong>{{ book.author.name }}</p>
+        <p><strong>Category: </strong>{{ book.category.name }}</p>
+        <p><strong>Publisher: </strong>{{ book.publisher.name }}</p>
+        <p><strong>Amount: </strong>{{ book.quantity }}</p>
+        
+        {% if book.description %}
+            <p>
+                <strong>Description:</strong><br>
+                {{ book.description }}
+            </p>
+        {% endif %}
+        
+        {% if request.session.user.role == 'customer' %}
+            <button class="toggleButton inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">Add to cart</button>
+        {% endif %}
+        {% if request.session.user == None %}
+            <a href="/login-form/" class="inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">Add to cart</a>
+        {% endif %}
+
+        <!-- Popup và overlay -->
+        <div class="overlay"></div>
+        <div class="popup">
+            <form action="{% url 'customer:add-book-cart' %}" method="post" class="grid grid-cols-5 gap-6">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <input type="hidden" name="title" value="{{ book.title }}">
+                <input type="hidden" name="image" value="{{ book.image }}">
+                <input type="hidden" name="price" value="{{ book.price }}">
+                <div class="col-span-3">
+                    <img src="{{ book.image }}" class="rounded-xl">
+                </div>
+                <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+                    <h1 class="mb-6 text-2xl">{{ book.title }}</h1>
+                    <p>Total Amount: {{ book.quantity }}</p> <br>
+                    Chọn số lượng: <input type="number" name="quantity" min="1" max="10" value="1" class="rounded-xl border border-solid border-black text-center">
+                    <button type="submit" class="toggleButton inline-block mt-6 ml-6 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-blue-700">Add to cart</button>
+                </div>
+                
+            </form>
+            <button class="closeButton px-3 py-2 bg-red-500 rounded-xl text-lg text-white bordered">X</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
