@@ -23,7 +23,7 @@ class Mobile(models.Model):
     is_feature = models.BooleanField()
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(CategoryMobile, related_name='mobies', on_delete=models.CASCADE)
+    category = models.ForeignKey(CategoryMobile, related_name='mobiles', on_delete=models.CASCADE)
     
     class Meta:
         db_table = 'mobile'

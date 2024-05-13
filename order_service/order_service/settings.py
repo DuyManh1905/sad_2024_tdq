@@ -65,14 +65,12 @@ WSGI_APPLICATION = 'order_service.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-   "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "order",
-        "USER": "root",
-        "PASSWORD": "20162017a",
-        "HOST": "localhost",
-        "PORT": "3306",
-    },
+   'default': {
+        'ENGINE': 'djongo',
+        'NAME':'order',
+        'HOST': 'localhost',
+        'PORT': 27017,
+    }
 }
 
 

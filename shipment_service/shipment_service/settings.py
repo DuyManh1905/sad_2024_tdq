@@ -66,11 +66,11 @@ WSGI_APPLICATION = 'shipment_service.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'shipment',
-        'USER': 'root',
+        'USER': 'postgres',
         'PASSWORD': '20162017a',
-        'PORT': '3306',
+        'PORT': '5432',
     }
 }
 

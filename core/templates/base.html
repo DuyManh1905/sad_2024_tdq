@@ -58,7 +58,7 @@
             <div class="space-x-6">
                 {% if request.session.user %}
                     {% if request.session.user.role == 'customer' %}
-                        <a href="{% url 'customer:search-page' %}" class="text-lg font-semibold hover:text-gray-500">Browse</a>
+                        <a href="{% url 'customer:search-page' %}" class="text-lg font-semibold hover:text-gray-500">Search</a>
                         <a href="{% url 'customer:cart' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Cart</a>
                         <a href="{% url 'customer:list-order' %}" class="px-6 py-3 text-lg font-semibold bg-orange-500 text-white rounded-xl hover:bg-orange-700">Your Order</a>
                 {% endif %}

@@ -92,6 +92,13 @@ DATABASES = {
         "HOST": "localhost",
         "PORT": "3306",
     }
+    # 'postgres': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'clothes',
+    #     'USER': 'postgres',
+    #     'PASSWORD': '20162017a',
+    #     'PORT': '5432',
+    # }
 }
 
 DATABASE_ROUTERS = [

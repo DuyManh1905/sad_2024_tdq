@@ -24,7 +24,7 @@ def get_list_mobile(request):
     for mobile in list_mobiles:
         serializer = MobileSerializer(mobile).data
         serializer['category'] = CategoryMobileSerializer(mobile.category).data
-        serializer['image'] = 'http://127.0.0.1:8008/' + serializer['image']
+        serializer['image'] = 'http://127.0.0.1:8008' + serializer['image']
         resp.append(serializer)
     return HttpResponse(json.dumps(resp), status=status.HTTP_200_OK, content_type = 'application/json')
 
@@ -38,7 +38,7 @@ def get_detail_mobile(request):
             mobile = Mobile.objects.get(pk=id)
             serializer = MobileSerializer(mobile).data
             serializer['category'] = CategoryMobileSerializer(mobile.category).data
-            serializer['image'] = 'http://127.0.0.1:8008/' + serializer['image']
+            serializer['image'] = 'http://127.0.0.1:8008' + serializer['image']
             return HttpResponse(json.dumps(serializer), status=status.HTTP_200_OK, content_type = 'application/json')
         except:
             resp['message'] = 'Not found'
